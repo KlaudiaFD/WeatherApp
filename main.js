@@ -14,7 +14,7 @@ let $city;
 let $url;
 
 const getWeaher = () => {
-    $city = 'London';
+    $city = (!input.value) ? 'New York' : input.value;
     $url = apiLink + $city + apiKey + units;
 
     axios.get($url)
@@ -27,27 +27,36 @@ const getWeaher = () => {
             weather.textContent = status.main
             temperature.textContent = Math.floor(temp) + '°C';
             humidity.textContent = hum + '%';
+            warning.textContent = '';
+            input.value = '';
 
 
-            // if (status.id >= 200 && status.id <300) {
-            //     photo.setAttribute("http://openweathermap.org/img/wn/10d@2x.png");
-            // }else if (status.id >= 300 && status.id <400){
-            //     photo.setAttribute('src', '../Drizzle.png');
-            // }else if(status.id >= 500 && status.id <600){
-            //     photo.setAttribute('src', "10n.png");
-            // }else if(status.id >= 600 && status.id <700){
-            //     photo.setAttribute('src', '../Snow.png');
-            // }else if(status.id >= 700 && status.id <800){
-            //     photo.setAttribute('src', '../Atmosphere.png');
-            // }else if(status.id === 800){
-            //     photo.setAttribute('src', '../Clear.png');
-            // }else if(status.id >= 800 && status.id <900){
-            //     photo.setAttribute('src', '../Clouds.png');
-            // }else{
-            //     photo.setAttribute('src', '../unknow.png');
-            // }
+            if (status.id >= 200 && status.id < 300) {
+                photo.setAttribute('src', "http://openweathermap.org/img/wn/11d@2x.png");
+            } else if (status.id >= 300 && status.id < 400) {
+                photo.setAttribute('src', "http://openweathermap.org/img/wn/09d@2x.png");
+            } else if (status.id >= 500 && status.id < 600) {
+                photo.setAttribute('src', "http://openweathermap.org/img/wn/10d@2x.png");
+            } else if (status.id >= 600 && status.id < 700) {
+                photo.setAttribute('src', "http://openweathermap.org/img/wn/13d@2x.png");
+            } else if (status.id >= 700 && status.id < 800) {
+                photo.setAttribute('src', "http://openweathermap.org/img/wn/50d@2x.png");
+            } else if (status.id === 800) {
+                photo.setAttribute('src', "http://openweathermap.org/img/wn/01d@2x.png");
+            } else if (status.id >= 800 && status.id < 900) {
+                photo.setAttribute('src', "http://openweathermap.org/img/wn/04n@2x.png");
+            } else {
+                photo.setAttribute('src', '../unknow.png');
+            }
         })
+        .catch(() => warning.textContent = 'Wpisz poprawną nazwę miasta.')
+};
+
+const enterCheck = () => {
+    if (event.keyCode === 13) {
+        getWeaher();
+    }
 }
-
-getWeaher()
-
+getWeaher();
+btn.addEventListener('click', getWeaher)
+input.addEventListener('keyup', enterCheck)
